@@ -3,6 +3,7 @@ package ar.edu.itba.sia.chainreaction.problem;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashSet;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class ChainReactionState {
 		this.col = col;
 		this.rows = rows;
 		this.cols = cols;
+		Pair<Integer, Integer> p = new Pair<>(row, col);
+		occupiedSquares.add(p);
+		occupiedSquaresOrdered.add(p);
 	}
 
 	/**
@@ -41,9 +45,7 @@ public class ChainReactionState {
 	ChainReactionState(ChainReactionState previousState, final int row, final int col) {
 		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols);
 		this.occupiedSquares.addAll(previousState.occupiedSquares);
-		Pair<Integer, Integer> p = new Pair<>(row, col);
-		occupiedSquares.add(p);
-		occupiedSquaresOrdered.add(p);
+		this.occupiedSquaresOrdered.addAll(previousState.occupiedSquaresOrdered);
 	}
 
 	private boolean canGoThere(Pair<Integer, Integer> next) {
@@ -106,5 +108,29 @@ public class ChainReactionState {
 
 	boolean isFinal() {
 		return occupiedSquares.size() == totalSquares;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				char c1, c2;
+				if (occupiedSquares.contains(new Pair<>(i, j))) {
+					if (i == row && j == col) {
+						c1 = '[';
+						c2 = ']';
+					} else {
+						c1 = '(';
+						c2 = ')';
+					}
+				} else {
+					c1 = ' '; c2 = ' ';
+				}
+				builder.append(new Formatter().format("%c%2d,%2d%c", c1, board[i][j][0], board[i][j][1], c2));
+			}
+			builder.append('\n');
+		}
+		return builder.toString();
 	}
 }

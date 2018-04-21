@@ -2,13 +2,11 @@ package ar.edu.itba.sia.chainreaction.problem;
 
 import ar.com.itba.sia.Problem;
 import ar.com.itba.sia.Rule;
-import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChainReactionProblem implements Problem<ChainReactionState> {
 	private final ChainReactionState initialState;
@@ -25,21 +23,11 @@ public class ChainReactionProblem implements Problem<ChainReactionState> {
 	@NotNull
 	@Override
 	public List<Rule<ChainReactionState>> getRules(ChainReactionState chainReactionState) {
-		Set<Rule<ChainReactionState>> rules = new HashSet<>();
-		Pair<Integer, Integer> p;
-		if ((p = chainReactionState.canGoUp()) != null) {
-			rules.add(new ChainReactionRule(p.getKey(), p.getValue()));
-		}
-		if ((p = chainReactionState.canGoDown()) != null) {
-			rules.add(new ChainReactionRule(p.getKey(), p.getValue()));
-		}
-		if ((p = chainReactionState.canGoLeft()) != null) {
-			rules.add(new ChainReactionRule(p.getKey(), p.getValue()));
-		}
-		if ((p = chainReactionState.canGoRight()) != null) {
-			rules.add(new ChainReactionRule(p.getKey(), p.getValue()));
-		}
-		return new ArrayList<>(rules);
+		return Stream.of(chainReactionState.canGoUp(), chainReactionState.canGoDown(), chainReactionState.canGoLeft(), chainReactionState.canGoRight())
+				.filter(Objects::nonNull)
+				.map(x -> new ChainReactionRule(x.getKey(), x.getValue()))
+				.distinct()
+				.collect(Collectors.toList());
 	}
 
 	@Override

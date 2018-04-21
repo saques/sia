@@ -16,7 +16,7 @@ public class App
         File problemFile = new File("./test_problems/problem1.txt");
         try {
             Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
-            problem.getInitialState();
+			System.out.println(problem.getInitialState());
 
         } catch (IOException e) {
             System.out.println("There was a read error.");
