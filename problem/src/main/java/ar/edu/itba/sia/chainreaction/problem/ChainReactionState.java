@@ -49,7 +49,7 @@ public class ChainReactionState {
 	}
 
 	private boolean canGoThere(Pair<Integer, Integer> next) {
-		return occupiedSquares.contains(next) &&
+		return !occupiedSquares.contains(next) &&
 				(board[row][col][0] == board[next.getKey()][next.getValue()][0] ||
 						board[row][col][1] == board[next.getKey()][next.getValue()][1]);
 	}
