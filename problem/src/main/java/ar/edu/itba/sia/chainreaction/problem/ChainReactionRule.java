@@ -2,6 +2,7 @@ package ar.edu.itba.sia.chainreaction.problem;
 
 import ar.com.itba.sia.Rule;
 
+
 public class ChainReactionRule implements Rule<ChainReactionState> {
 	private final int nextRow, nextCol;
 
@@ -12,7 +13,7 @@ public class ChainReactionRule implements Rule<ChainReactionState> {
 
 	@Override
 	public double getCost() {
-		return 0;
+		return 1;
 	}
 
 	@Override

@@ -2,17 +2,17 @@ package ar.edu.itba.sia.chainreaction.problem;
 
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChainReactionState {
 	private final int totalSquares;
 	private final int [][][] board;
 	private final int forms, colors, row, col, rows, cols;
-	private final HashSet<Pair<Integer, Integer>> occupiedSquares;
+	private final Set<Pair<Integer, Integer>> occupiedSquares;
 	private final List<Pair<Integer, Integer>> occupiedSquaresOrdered;
+	private final Set<Pair<Integer, Integer>> neighbours;
 
 	/**
 	 * @param board board[rows][cols][2]
@@ -35,6 +35,12 @@ public class ChainReactionState {
 		Pair<Integer, Integer> p = new Pair<>(row, col);
 		occupiedSquares.add(p);
 		occupiedSquaresOrdered.add(p);
+
+		this.neighbours = Stream.of(canGoDown(), canGoLeft(), canGoRight(), canGoUp()).filter(Optional::isPresent)
+								.map(Optional::get)
+								.collect(Collectors.toSet());
+
+
 	}
 
 	/**
@@ -54,60 +60,64 @@ public class ChainReactionState {
 						board[row][col][1] == board[next.getKey()][next.getValue()][1]);
 	}
 
-	Pair<Integer, Integer> canGoUp() {
+	private Optional<Pair<Integer, Integer>> canGoUp() {
 		int rowUp = row;
 		do {
 			rowUp = rowUp - 1 >= 0 ? rowUp - 1: rows - 1;
 		} while (rowUp != row && board[rowUp][col][0] == 0);
 		Pair<Integer, Integer> next = new Pair<>(rowUp, col);
 		if (canGoThere(next)) {
-			return next;
+			return Optional.of(next);
 		} else {
-			return null;
+			return Optional.empty();
 		}
 	}
 
-	Pair<Integer, Integer> canGoDown() {
+	private Optional<Pair<Integer, Integer>> canGoDown() {
 		int rowDown = row;
 		do {
 			rowDown = rowDown + 1 < rows ? rowDown + 1: 0;
 		} while (rowDown != row && board[rowDown][col][0] == 0);
 		Pair<Integer, Integer> next = new Pair<>(rowDown, col);
 		if (canGoThere(next)) {
-			return next;
+			return Optional.of(next);
 		} else {
-			return null;
+			return Optional.empty();
 		}
 	}
 
-	Pair<Integer, Integer> canGoLeft() {
+	private Optional<Pair<Integer, Integer>> canGoLeft() {
 		int colLeft = col;
 		do {
 			colLeft = colLeft - 1 >= 0 ? colLeft - 1: cols - 1;
 		} while (colLeft != col && board[row][colLeft][0] == 0);
 		Pair<Integer, Integer> next = new Pair<>(row, colLeft);
 		if (canGoThere(next)) {
-			return next;
+			return Optional.of(next);
 		} else {
-			return null;
+			return Optional.empty();
 		}
 	}
 
-	Pair<Integer, Integer> canGoRight() {
+	private Optional<Pair<Integer, Integer>> canGoRight() {
 		int colRight = col;
 		do {
 			colRight = colRight + 1 < cols ? colRight + 1: 0;
 		} while (colRight != col && board[row][colRight][0] == 0);
 		Pair<Integer, Integer> next = new Pair<>(row, colRight);
 		if (canGoThere(next)) {
-			return next;
+			return Optional.of(next);
 		} else {
-			return null;
+			return Optional.empty();
 		}
 	}
 
 	boolean isFinal() {
 		return occupiedSquares.size() == totalSquares;
+	}
+
+	Set<Pair<Integer, Integer>> getNeighbours(){
+		return neighbours;
 	}
 
 	@Override
@@ -133,4 +143,5 @@ public class ChainReactionState {
 		}
 		return builder.toString();
 	}
+
 }
