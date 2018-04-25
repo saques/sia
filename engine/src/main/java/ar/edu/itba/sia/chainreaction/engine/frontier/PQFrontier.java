@@ -5,14 +5,14 @@ import ar.edu.itba.sia.chainreaction.engine.Node;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class PQFrontierStrategy<E> implements FrontierStrategy<E> {
+public class PQFrontier<E> implements Frontier<E> {
 
 
 
     private PriorityQueue<Node<E>> pq;
 
 
-    public PQFrontierStrategy(Comparator<Node<E>> comparator){
+    public PQFrontier(Comparator<Node<E>> comparator){
         pq = new PriorityQueue<>(comparator);
     }
 

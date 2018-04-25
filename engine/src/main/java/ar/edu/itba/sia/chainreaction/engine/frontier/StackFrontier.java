@@ -5,27 +5,27 @@ import ar.edu.itba.sia.chainreaction.engine.Node;
 import java.util.Deque;
 import java.util.LinkedList;
 
-public class QueueFrontierStrategy<E> implements FrontierStrategy<E> {
+public class StackFrontier<E> implements Frontier<E> {
 
-    private Deque<Node<E>> q = new LinkedList<>();
+    private Deque<Node<E>> s = new LinkedList<>();
 
     @Override
     public Node<E> getPrioritary() {
-        return q.getLast();
+        return s.removeFirst();
     }
 
     @Override
     public void add(Node<E> n) {
-        q.addFirst(n);
+        s.addFirst(n);
     }
 
     @Override
     public Node<E> observePrioritary() {
-        return q.peekLast();
+        return s.getFirst();
     }
 
     @Override
     public int size() {
-        return q.size();
+        return s.size();
     }
 }

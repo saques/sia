@@ -4,7 +4,7 @@ import ar.edu.itba.sia.chainreaction.engine.Node;
 
 import java.util.NoSuchElementException;
 
-public interface FrontierStrategy<E> {
+public interface Frontier<E> {
 
     Node<E> getPrioritary();
 
@@ -13,5 +13,9 @@ public interface FrontierStrategy<E> {
     Node<E> observePrioritary();
 
     int size();
+
+    default boolean isEmpty(){
+        return size() == 0;
+    }
 
 }

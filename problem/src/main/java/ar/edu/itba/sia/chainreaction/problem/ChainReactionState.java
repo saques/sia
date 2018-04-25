@@ -144,4 +144,29 @@ public class ChainReactionState {
 		return builder.toString();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ChainReactionState that = (ChainReactionState) o;
+		return totalSquares == that.totalSquares &&
+				forms == that.forms &&
+				colors == that.colors &&
+				row == that.row &&
+				col == that.col &&
+				rows == that.rows &&
+				cols == that.cols &&
+				Arrays.equals(board, that.board) &&
+				Objects.equals(occupiedSquares, that.occupiedSquares) &&
+				Objects.equals(occupiedSquaresOrdered, that.occupiedSquaresOrdered) &&
+				Objects.equals(neighbours, that.neighbours);
+	}
+
+	@Override
+	public int hashCode() {
+
+		int result = Objects.hash(totalSquares, forms, colors, row, col, rows, cols, occupiedSquares, occupiedSquaresOrdered, neighbours);
+		result = 31 * result + Arrays.hashCode(board);
+		return result;
+	}
 }

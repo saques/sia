@@ -1,21 +1,29 @@
 package ar.edu.itba.sia.chainreaction.engine;
 
+import java.util.Objects;
+
 public class Node<E> {
 
-    private E current, parent;
+    private E current;
 
-    private double cost, heuristic;
+    private Node<E> parent;
 
-    public Node(E current, E parent, double cost){
+    private double cost;
+
+    private long milis;
+
+    public Node(E current, Node<E> parent, double cost){
         this.current = current;
         this.parent = parent;
+        this.cost = cost;
+        this.milis = System.currentTimeMillis();
     }
 
     public E getCurrent() {
         return current;
     }
 
-    public E getParent() {
+    public Node<E> getParent() {
         return parent;
     }
 
@@ -23,18 +31,36 @@ public class Node<E> {
         if(parent == null){
             return current.toString();
         }
-        return current + "<-" + parent.toString();
+        return current + "\n" + parent.toString();
     }
 
     public double getCost() {
         return cost;
     }
 
-    public double getHeuristic() {
-        return heuristic;
+    public long getMilis(){
+        return milis;
     }
 
-    public double estimatedTotalCost(){
-        return cost + heuristic;
+    public long elapsed(Node<E> n){
+        return Math.abs(milis-n.milis);
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node<?> node = (Node<?>) o;
+        return Double.compare(node.cost, cost) == 0 &&
+                Objects.equals(current, node.current) &&
+                Objects.equals(parent, node.parent);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(current, parent, cost);
+    }
+
 }
