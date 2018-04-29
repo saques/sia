@@ -14,6 +14,8 @@ public class Node<E> {
 
     private double cost;
 
+    private int depth;
+
     private long millis;
 
     public Node(E current, Node<E> parent, Rule<E> rule, double cost){
@@ -21,6 +23,7 @@ public class Node<E> {
         this.parent = parent;
         this.rule = rule;
         this.cost = cost;
+        this.depth = parent != null ? parent.depth + 1 : 0;
         this.millis = System.currentTimeMillis();
     }
 
@@ -41,6 +44,10 @@ public class Node<E> {
 
     public double getCost() {
         return cost;
+    }
+
+    public int getDepth(){
+        return depth;
     }
 
     public long getMillis(){

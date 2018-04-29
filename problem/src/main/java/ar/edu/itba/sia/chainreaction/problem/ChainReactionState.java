@@ -121,6 +121,11 @@ public class ChainReactionState {
 		return neighbours;
 	}
 
+
+	double fillRate(){
+		return ((double)occupiedSquares.size())/((double)totalSquares);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
