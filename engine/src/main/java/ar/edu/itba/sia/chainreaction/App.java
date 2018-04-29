@@ -9,6 +9,7 @@ import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
 import ar.edu.itba.sia.chainreaction.problem.RemainingVertexDegreeHeuristic;
 import ar.edu.itba.sia.chainreaction.problem.VertexDegreeHeuristic;
+import ar.edu.itba.sia.chainreaction.problem.InvVertexDegreeHeuristic;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionState;
 import ar.edu.itba.sia.chainreaction.problem.ProblemFactory;
 
@@ -25,10 +26,11 @@ public class App
 
         Heuristic<ChainReactionState> h1 = new VertexDegreeHeuristic();
         Heuristic<ChainReactionState> h2 = new RemainingVertexDegreeHeuristic();
+        Heuristic<ChainReactionState> h3 = new InvVertexDegreeHeuristic();
 
         Frontier<ChainReactionState> frontier;
-        //frontier = PQFrontier.aStarFrontier(10,h2);
-        frontier = PQFrontier.dijkstraFrontier(10);
+        frontier = PQFrontier.aStarFrontier(10,h3);
+        //frontier = PQFrontier.dijkstraFrontier(10);
         //frontier = new StackFrontier<>();
         //frontier = new QueueFrontier<>();
         //frontier = new IDDFSFrontier<>();
