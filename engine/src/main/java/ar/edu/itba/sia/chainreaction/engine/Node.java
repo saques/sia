@@ -1,5 +1,7 @@
 package ar.edu.itba.sia.chainreaction.engine;
 
+import ar.com.itba.sia.Rule;
+
 import java.util.Objects;
 
 public class Node<E> {
@@ -8,15 +10,18 @@ public class Node<E> {
 
     private Node<E> parent;
 
+    private Rule<E> rule;
+
     private double cost;
 
-    private long milis;
+    private long millis;
 
-    public Node(E current, Node<E> parent, double cost){
+    public Node(E current, Node<E> parent, Rule<E> rule, double cost){
         this.current = current;
         this.parent = parent;
+        this.rule = rule;
         this.cost = cost;
-        this.milis = System.currentTimeMillis();
+        this.millis = System.currentTimeMillis();
     }
 
     public E getCurrent() {
@@ -31,19 +36,19 @@ public class Node<E> {
         if(parent == null){
             return current.toString();
         }
-        return current + "\n" + parent.toString();
+        return parent.toString() + "\n--> " + rule + " -->\n\n" + current;
     }
 
     public double getCost() {
         return cost;
     }
 
-    public long getMilis(){
-        return milis;
+    public long getMillis(){
+        return millis;
     }
 
     public long elapsed(Node<E> n){
-        return Math.abs(milis-n.milis);
+        return Math.abs(millis -n.millis);
     }
 
 

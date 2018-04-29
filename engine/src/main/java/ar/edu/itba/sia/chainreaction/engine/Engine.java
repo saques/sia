@@ -35,10 +35,8 @@ public class Engine<E> {
                 return node;
 
             problem.getRules(node.getCurrent()).stream()
-                    .map(x->new Node(x.applyToState(node.getCurrent()), node, x.getCost()+node.getCost()))
+                    .map(x->new Node<>(x.applyToState(node.getCurrent()), node, x, x.getCost()+node.getCost()))
                     .forEach(frontier::add);
-
-            System.out.println(node.getCurrent() + "\n");
 
         }
 

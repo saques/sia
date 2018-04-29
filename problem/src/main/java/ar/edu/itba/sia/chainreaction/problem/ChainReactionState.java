@@ -36,10 +36,10 @@ public class ChainReactionState {
 		occupiedSquares.add(p);
 		occupiedSquaresOrdered.add(p);
 
-		this.neighbours = Stream.of(canGoDown(), canGoLeft(), canGoRight(), canGoUp()).filter(Optional::isPresent)
+		this.neighbours = Stream.of(canGoDown(), canGoLeft(), canGoRight(), canGoUp())
+								.filter(Optional::isPresent)
 								.map(Optional::get)
 								.collect(Collectors.toSet());
-
 
 	}
 
@@ -52,6 +52,7 @@ public class ChainReactionState {
 		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols);
 		this.occupiedSquares.addAll(previousState.occupiedSquares);
 		this.occupiedSquaresOrdered.addAll(previousState.occupiedSquaresOrdered);
+		this.neighbours.removeIf(x -> occupiedSquares.contains(x));
 	}
 
 	private boolean canGoThere(Pair<Integer, Integer> next) {
@@ -118,10 +119,6 @@ public class ChainReactionState {
 
 	Set<Pair<Integer, Integer>> getNeighbours(){
 		return neighbours;
-	}
-
-	public Set<Pair<Integer, Integer>> getOccupiedSquares() {
-		return occupiedSquares;
 	}
 
 	@Override

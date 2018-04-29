@@ -27,6 +27,11 @@ public class ChainReactionRule implements Rule<ChainReactionState> {
 	}
 
 	@Override
+	public String toString(){
+		return "Next: (" + nextRow + "; " + nextCol + ")";
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		if (other.getClass() != ChainReactionRule.class) {
 			return false;
