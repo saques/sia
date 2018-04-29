@@ -6,7 +6,7 @@ import ar.edu.itba.sia.chainreaction.engine.Engine;
 import ar.edu.itba.sia.chainreaction.engine.Node;
 import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
-import ar.edu.itba.sia.chainreaction.problem.VertexDegreeHeuristic;
+import ar.edu.itba.sia.chainreaction.problem.InvVertexDegreeHeuristic;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionState;
 import ar.edu.itba.sia.chainreaction.problem.ProblemFactory;
 
@@ -20,12 +20,13 @@ public class App
 
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null,0);
-        Heuristic<ChainReactionState> h = new VertexDegreeHeuristic();
+//        Heuristic<ChainReactionState> h = new VertexDegreeHeuristic();
+        Heuristic<ChainReactionState> h = new InvVertexDegreeHeuristic();
 
 
         Frontier<ChainReactionState> frontier;
-        //frontier = PQFrontier.aStarFrontier(10,h);
-        frontier = PQFrontier.dijkstraFrontier(10);
+        frontier = PQFrontier.aStarFrontier(10,h);
+//        frontier = PQFrontier.dijkstraFrontier(10);
         //frontier = new StackFrontier<>();
         //frontier = new QueueFrontier<>();
 
