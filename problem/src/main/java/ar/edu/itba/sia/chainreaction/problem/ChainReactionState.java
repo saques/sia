@@ -120,6 +120,10 @@ public class ChainReactionState {
 		return neighbours;
 	}
 
+	public Set<Pair<Integer, Integer>> getOccupiedSquares() {
+		return occupiedSquares;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
