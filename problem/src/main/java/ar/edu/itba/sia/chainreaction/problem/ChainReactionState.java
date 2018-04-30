@@ -159,20 +159,19 @@ public class ChainReactionState {
 		return cols;
 	}
 
-	public boolean checkPairNeighbours(Pair<Integer, Integer> pair) {
-		List<Pair<Integer, Integer>> set =  findNeighbours(pair);
-		return set.size() != 0;
+	public List<Pair<Integer, Integer>> getPairNeighbours(Pair<Integer, Integer> pair) {
+		return findNeighbours(pair);
 	}
 
 	public boolean isZeroZeroSquare(Pair<Integer, Integer> pair) {
-		return board[pair.getKey()][pair.getValue()][0] != 0;
+		return board[pair.getKey()][pair.getValue()][0] == 0;
 	}
 
 	public int getLeft() {
 		return totalSquares - occupiedSquaresOrdered.size();
 	}
 
-	public Set<Pair<Integer, Integer>> getOccupiedSquares() {
-		return new HashSet<>();
+	public boolean[][] getOccupiedSquares() {
+		return occupiedSquares;
 	}
 }

@@ -19,7 +19,7 @@ import java.io.File;
 public class App
 {
     public static void main( String[] args ) throws Exception{
-        File problemFile = new File("./test_problems/pjf8.txt");
+        File problemFile = new File("./test_problems/pjf9.txt");
 
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
@@ -27,7 +27,7 @@ public class App
         Heuristic<ChainReactionState> h1 = new VertexDegreeHeuristic();
         Heuristic<ChainReactionState> h2 = new RemainingVertexDegreeHeuristic();
         Heuristic<ChainReactionState> h3 = new InvVertexDegreeHeuristic();
-
+        Heuristic<ChainReactionState> h4 = new ChainReactionHeuristicNeighbourPruning();
         Frontier<ChainReactionState> frontier;
         frontier = PQFrontier.aStarFrontier(10,h3);
         //frontier = PQFrontier.dijkstraFrontier(10);
