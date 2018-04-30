@@ -10,7 +10,7 @@ public class ChainReactionProblem implements Problem<ChainReactionState> {
 	private final ChainReactionState initialState;
 
 	ChainReactionProblem(int[][][] board, int forms, int colors, int totalSquares, int rows, int cols) {
-		this.initialState = new ChainReactionState(board, forms, colors, totalSquares,0, 0, rows, cols);
+		this.initialState = new ChainReactionState(board, forms, colors, totalSquares,0, 0, rows, cols, true);
 	}
 
 	@Override

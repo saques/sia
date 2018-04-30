@@ -5,6 +5,7 @@ import ar.com.itba.sia.Problem;
 import ar.edu.itba.sia.chainreaction.engine.Engine;
 import ar.edu.itba.sia.chainreaction.engine.Node;
 import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
+import ar.edu.itba.sia.chainreaction.engine.frontier.StackFrontier;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionHeuristicNeighbourPruning;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
 import ar.edu.itba.sia.chainreaction.problem.RemainingVertexDegreeHeuristic;
@@ -18,7 +19,7 @@ import java.io.File;
 public class App
 {
     public static void main( String[] args ) throws Exception{
-        File problemFile = new File("./test_problems/problem1.txt");
+        File problemFile = new File("./test_problems/pjf8.txt");
 
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
@@ -30,7 +31,7 @@ public class App
         Frontier<ChainReactionState> frontier;
         frontier = PQFrontier.aStarFrontier(10,h3);
         //frontier = PQFrontier.dijkstraFrontier(10);
-        //frontier = new StackFrontier<>();
+//        frontier = new StackFrontier<>();
         //frontier = new QueueFrontier<>();
         //frontier = new IDDFSFrontier<>();
 

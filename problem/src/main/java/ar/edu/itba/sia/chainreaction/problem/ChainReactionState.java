@@ -10,9 +10,9 @@ public class ChainReactionState {
 	private final int totalSquares;
 	private final int [][][] board;
 	private final int forms, colors, row, col, rows, cols;
-	private final Set<Pair<Integer, Integer>> occupiedSquares;
-	private final List<Pair<Integer, Integer>> occupiedSquaresOrdered;
-	private final Set<Pair<Integer, Integer>> neighbours;
+	private boolean[][] occupiedSquares;
+	private List<Pair<Integer, Integer>> occupiedSquaresOrdered;
+	private List<Pair<Integer, Integer>> neighbours;
 
 	/**
 	 * @param board board[rows][cols][2]
@@ -21,10 +21,9 @@ public class ChainReactionState {
 	 *              The board should be treated as final by the states and not be modified.
 	 */
 	ChainReactionState(final int[][][] board, final int forms, final int colors, final int totalSquares,
-					   final int row, final int col, final int rows, final int cols) {
+					   final int row, final int col, final int rows, final int cols, boolean isInitial) {
 		this.board = board;
-		this.occupiedSquares = new HashSet<>();
-		this.occupiedSquaresOrdered = new ArrayList<>();
+
 		this.forms = forms;
 		this.colors = colors;
 		this.totalSquares = totalSquares;
@@ -33,104 +32,73 @@ public class ChainReactionState {
 		this.rows = rows;
 		this.cols = cols;
 		Pair<Integer, Integer> p = new Pair<>(row, col);
-		occupiedSquares.add(p);
-		occupiedSquaresOrdered.add(p);
-		Pair<Integer, Integer> pair = new Pair<>(row, col);
-		this.neighbours = Stream.of(canGoDown(pair), canGoLeft(pair), canGoRight(pair), canGoUp(pair)).filter(Optional::isPresent)
-								.map(Optional::get)
-								.collect(Collectors.toSet());
-
+		if (isInitial) {
+			this.occupiedSquares = new boolean[rows][cols];
+			this.occupiedSquaresOrdered = new ArrayList<>();
+			occupiedSquares[row][col] = true;
+			occupiedSquaresOrdered.add(p);
+			Pair<Integer, Integer> pair = new Pair<>(row, col);
+			this.neighbours = findNeighbours(pair);
+		}
 	}
 
+	private boolean[][] copyBidimensionalArray(boolean[][] old) {
+		boolean[][] n = new boolean[old.length][];
+		for(int i=0; i<old.length; i++)
+			n[i] = Arrays.copyOf(old[i], old[i].length);
+		return n;
+	}
 	/**
 	 *
 	 * @param previousState
 	 *
 	 */
 	ChainReactionState(ChainReactionState previousState, final int row, final int col) {
-		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols);
-		this.occupiedSquares.addAll(previousState.occupiedSquares);
-		this.occupiedSquaresOrdered.addAll(previousState.occupiedSquaresOrdered);
-		this.neighbours.removeIf(x -> occupiedSquares.contains(x));
+		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols, false);
+		this.occupiedSquares = copyBidimensionalArray(previousState.occupiedSquares);
+		occupiedSquares[row][col] = true;
+		this.occupiedSquaresOrdered = new ArrayList<>(previousState.occupiedSquaresOrdered);
+		Pair<Integer, Integer> pair = new Pair<>(row, col);
+		this.occupiedSquaresOrdered.add(pair);
+		this.neighbours = findNeighbours(pair);
+//		this.neighbours.addAll(getRowNeighbours(pair));
+		this.neighbours.removeIf(x -> occupiedSquares[x.getKey()][x.getValue()]);
 	}
 
-	private boolean canGoThere(int row, int col, Pair<Integer, Integer> next) {
-		return !occupiedSquares.contains(next) &&
-				(board[row][col][0] == board[next.getKey()][next.getValue()][0] ||
-						board[row][col][1] == board[next.getKey()][next.getValue()][1]);
+	private boolean canGoThere(int row, int col, int row2, int col2) {
+		return !occupiedSquares[row2][col2] &&
+				(board[row][col][0] == board[row2][col2][0] ||
+						board[row][col][1] == board[row2][col2][1]);
 	}
 
-	private Optional<Pair<Integer, Integer>> canGoUp(Pair<Integer, Integer> pair) {
+	private List<Pair<Integer, Integer>> findNeighbours(Pair<Integer, Integer> pair) {
+		List<Pair<Integer, Integer>> set = new ArrayList<>(4);
 		int row = pair.getKey();
 		int col = pair.getValue();
-		int rowUp = row;
-		do {
-			rowUp = rowUp - 1 >= 0 ? rowUp - 1: rows - 1;
-		} while (rowUp != row && board[rowUp][col][0] == 0);
-		Pair<Integer, Integer> next = new Pair<>(rowUp, col);
-		if (canGoThere(row, col, next)) {
-			return Optional.of(next);
-		} else {
-			return Optional.empty();
+		for (int i = 0; i < rows; i++) {
+			if (i != row && canGoThere(row,col, i, col)) {
+				set.add(new Pair<>(i, col));
+			}
 		}
-	}
-
-	private Optional<Pair<Integer, Integer>> canGoDown(Pair<Integer, Integer> pair) {
-		int row = pair.getKey();
-		int col = pair.getValue();
-		int rowDown = row;
-		do {
-			rowDown = rowDown + 1 < rows ? rowDown + 1: 0;
-		} while (rowDown != row && board[rowDown][col][0] == 0);
-		Pair<Integer, Integer> next = new Pair<>(rowDown, col);
-		if (canGoThere(row, col, next)) {
-			return Optional.of(next);
-		} else {
-			return Optional.empty();
+		for (int j = 0; j < cols; j++) {
+			if (j != col && canGoThere(row,col, row, j)) {
+				set.add(new Pair<>(row, j));
+			}
 		}
-	}
-
-	private Optional<Pair<Integer, Integer>> canGoLeft(Pair<Integer, Integer> pair) {
-		int row = pair.getKey();
-		int col = pair.getValue();
-		int colLeft = col;
-		do {
-			colLeft = colLeft - 1 >= 0 ? colLeft - 1: cols - 1;
-		} while (colLeft != col && board[row][colLeft][0] == 0);
-		Pair<Integer, Integer> next = new Pair<>(row, colLeft);
-		if (canGoThere(row, col, next)) {
-			return Optional.of(next);
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	private Optional<Pair<Integer, Integer>> canGoRight(Pair<Integer, Integer> pair) {
-		int row = pair.getKey();
-		int col = pair.getValue();
-		int colRight = col;
-		do {
-			colRight = colRight + 1 < cols ? colRight + 1: 0;
-		} while (colRight != col && board[row][colRight][0] == 0);
-		Pair<Integer, Integer> next = new Pair<>(row, colRight);
-		if (canGoThere(row, col, next)) {
-			return Optional.of(next);
-		} else {
-			return Optional.empty();
-		}
+		return set;
 	}
 
 	boolean isFinal() {
-		return occupiedSquares.size() == totalSquares;
+		return occupiedSquaresOrdered.size() == totalSquares;
 	}
 
-	Set<Pair<Integer, Integer>> getNeighbours(){
+	List<Pair<Integer, Integer>> getNeighbours(){
 		return neighbours;
 	}
 
 
 	double fillRate(){
-		return ((double)occupiedSquares.size())/((double)totalSquares);
+		return ((double)occupiedSquaresOrdered.size())/((double)totalSquares);
 	}
 
 	@Override
@@ -139,7 +107,7 @@ public class ChainReactionState {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				char c1, c2;
-				if (occupiedSquares.contains(new Pair<>(i, j))) {
+				if (occupiedSquares[i][j]) {
 					if (i == row && j == col) {
 						c1 = '[';
 						c2 = ']';
@@ -192,9 +160,8 @@ public class ChainReactionState {
 	}
 
 	public boolean checkPairNeighbours(Pair<Integer, Integer> pair) {
-		return Stream.of(canGoDown(pair), canGoLeft(pair), canGoRight(pair), canGoUp(pair)).filter(Optional::isPresent)
-				.map(Optional::get)
-				.count() != 0;
+		List<Pair<Integer, Integer>> set =  findNeighbours(pair);
+		return set.size() != 0;
 	}
 
 	public boolean isZeroZeroSquare(Pair<Integer, Integer> pair) {
@@ -202,10 +169,10 @@ public class ChainReactionState {
 	}
 
 	public int getLeft() {
-		return totalSquares - occupiedSquares.size();
+		return totalSquares - occupiedSquaresOrdered.size();
 	}
 
 	public Set<Pair<Integer, Integer>> getOccupiedSquares() {
-		return occupiedSquares;
+		return new HashSet<>();
 	}
 }
