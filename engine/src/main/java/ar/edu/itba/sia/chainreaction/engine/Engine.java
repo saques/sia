@@ -40,11 +40,9 @@ public class Engine<E> {
             problem.getRules(node.getCurrent()).stream()
                     .map(x-> {
                         E state = x.applyToState(node.getCurrent());
-                        return new Node<>(state, node, x.getCost()+node.getCost(), heuristic.getValue(state));
+                        return new Node<>(state, node, x,x.getCost()+node.getCost(), heuristic.getValue(state));
                     })
                     .forEach(frontier::add);
-
-            System.out.println(node.getCurrent() + "\n");
 
         }
 

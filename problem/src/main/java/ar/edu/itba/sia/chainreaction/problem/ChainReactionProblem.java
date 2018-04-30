@@ -22,7 +22,6 @@ public class ChainReactionProblem implements Problem<ChainReactionState> {
 	@Override
 	public List<Rule<ChainReactionState>> getRules(ChainReactionState chainReactionState) {
 		return chainReactionState.getNeighbours().stream()
-				.filter(x -> !chainReactionState.getOccupiedSquares().contains(x))
 				.map(x -> new ChainReactionRule(x.getKey(), x.getValue()))
 				.collect(Collectors.toList());
 	}

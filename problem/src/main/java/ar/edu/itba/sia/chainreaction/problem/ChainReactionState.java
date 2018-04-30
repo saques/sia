@@ -51,6 +51,7 @@ public class ChainReactionState {
 		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols);
 		this.occupiedSquares.addAll(previousState.occupiedSquares);
 		this.occupiedSquaresOrdered.addAll(previousState.occupiedSquaresOrdered);
+		this.neighbours.removeIf(x -> occupiedSquares.contains(x));
 	}
 
 	private boolean canGoThere(int row, int col, Pair<Integer, Integer> next) {
@@ -127,8 +128,9 @@ public class ChainReactionState {
 		return neighbours;
 	}
 
-	public Set<Pair<Integer, Integer>> getOccupiedSquares() {
-		return occupiedSquares;
+
+	double fillRate(){
+		return ((double)occupiedSquares.size())/((double)totalSquares);
 	}
 
 	@Override
@@ -201,5 +203,9 @@ public class ChainReactionState {
 
 	public int getLeft() {
 		return totalSquares - occupiedSquares.size();
+	}
+
+	public Set<Pair<Integer, Integer>> getOccupiedSquares() {
+		return occupiedSquares;
 	}
 }

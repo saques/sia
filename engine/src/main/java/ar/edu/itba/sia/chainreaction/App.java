@@ -1,12 +1,15 @@
 package ar.edu.itba.sia.chainreaction;
 
+import ar.com.itba.sia.Heuristic;
 import ar.com.itba.sia.Problem;
 import ar.edu.itba.sia.chainreaction.engine.Engine;
 import ar.edu.itba.sia.chainreaction.engine.Node;
 import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
-import ar.edu.itba.sia.chainreaction.engine.frontier.QueueFrontier;
-import ar.edu.itba.sia.chainreaction.engine.frontier.StackFrontier;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionHeuristicNeighbourPruning;
+import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
+import ar.edu.itba.sia.chainreaction.problem.RemainingVertexDegreeHeuristic;
+import ar.edu.itba.sia.chainreaction.problem.VertexDegreeHeuristic;
+import ar.edu.itba.sia.chainreaction.problem.InvVertexDegreeHeuristic;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionState;
 import ar.edu.itba.sia.chainreaction.problem.ProblemFactory;
 
@@ -15,36 +18,34 @@ import java.io.File;
 public class App
 {
     public static void main( String[] args ) throws Exception{
+        File problemFile = new File("./test_problems/problem1.txt");
 
-        Engine<ChainReactionState> engine = Engine.build(new PQFrontier<>((x, y) -> {
-            int res = (int)(x.getHeuristicCost() - y.getHeuristicCost());
-            if (res == 0) {
-                // force dfs behaviour in case of ties.
-                return -(int) (x.getCost() - y.getCost());
-            } else {
-                return res;
-            }
-        }));
-//        Engine<ChainReactionState> engine = Engine.build(new QueueFrontier<>());
-//        Engine<ChainReactionState> engine = Engine.build(new StackFrontier<>());
-        File problemFile = new File("./test_problems/pjf5.txt");
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
+        Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
 
-        Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null,0, 0);
+        Heuristic<ChainReactionState> h1 = new VertexDegreeHeuristic();
+        Heuristic<ChainReactionState> h2 = new RemainingVertexDegreeHeuristic();
+        Heuristic<ChainReactionState> h3 = new InvVertexDegreeHeuristic();
 
-        Node<ChainReactionState> n = engine.solution(init, problem, new ChainReactionHeuristicNeighbourPruning());
-//        Node<ChainReactionState> n = engine.solution(init, problem);
+        Frontier<ChainReactionState> frontier;
+        frontier = PQFrontier.aStarFrontier(10,h3);
+        //frontier = PQFrontier.dijkstraFrontier(10);
+        //frontier = new StackFrontier<>();
+        //frontier = new QueueFrontier<>();
+        //frontier = new IDDFSFrontier<>();
 
+        Engine<ChainReactionState> engine = Engine.build(frontier);
+
+
+        Node<ChainReactionState> n = engine.solution(init, problem);
 
         if(n == null) {
             System.out.println("No solution");
         } else {
-            System.out.println(n.getCurrent().toString());
-
+            System.out.println(n.toString());
             System.out.println("Elapsed: " + init.elapsed(n));
             System.out.println("Cost: " + n.getCost());
         }
-
 
 
     }
