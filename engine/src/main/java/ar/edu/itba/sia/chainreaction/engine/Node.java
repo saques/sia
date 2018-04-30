@@ -47,7 +47,7 @@ public class Node<E> {
     public double getCost() {
         return cost;
     }
-    public double getHeuristicCost() {return heuristicCost + cost;}
+    public double getHeuristicCost() {return heuristicCost;}
 
     public int getDepth(){
         return depth;

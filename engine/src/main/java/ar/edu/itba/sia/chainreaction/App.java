@@ -29,7 +29,7 @@ public class App
         Heuristic<ChainReactionState> h3 = new InvVertexDegreeHeuristic();
         Heuristic<ChainReactionState> h4 = new ChainReactionHeuristicNeighbourPruning();
         Frontier<ChainReactionState> frontier;
-        frontier = PQFrontier.aStarFrontier(10,h3);
+        frontier = PQFrontier.aStarFrontier(10);
         //frontier = PQFrontier.dijkstraFrontier(10);
 //        frontier = new StackFrontier<>();
         //frontier = new QueueFrontier<>();
@@ -38,7 +38,7 @@ public class App
         Engine<ChainReactionState> engine = Engine.build(frontier);
 
 
-        Node<ChainReactionState> n = engine.solution(init, problem);
+        Node<ChainReactionState> n = engine.solution(init, problem, h4);
 
         if(n == null) {
             System.out.println("No solution");

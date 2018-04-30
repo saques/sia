@@ -6,6 +6,7 @@ import javafx.util.Pair;
 import java.util.List;
 
 public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainReactionState> {
+
 	@Override
 	public double getValue(ChainReactionState chainReactionState) {
 		if (chainReactionState.getLeft() == 1) {

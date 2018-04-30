@@ -10,9 +10,9 @@ public class PQFrontier<E> implements Frontier<E> {
 
 
 
-    public static <E> PQFrontier<E> aStarFrontier(int initial, Heuristic<E> h){
+    public static <E> PQFrontier<E> aStarFrontier(int initial){
         PQFrontier<E> ans = new PQFrontier<>();
-        ans.pq = new PriorityQueue<>(initial, heuristicComparator(h));
+        ans.pq = new PriorityQueue<>(initial, heuristicComparator());
         return ans;
     }
 
@@ -22,8 +22,8 @@ public class PQFrontier<E> implements Frontier<E> {
         return ans;
     }
 
-    private static <E> Comparator<Node<E>> heuristicComparator(Heuristic<E> h){
-        return (x, y) -> Double.compare(h.getValue(x.getCurrent()), h.getValue(y.getCurrent()));
+    private static <E> Comparator<Node<E>> heuristicComparator(){
+        return Comparator.comparingDouble(Node::getHeuristicCost);
     }
 
     private static <E> Comparator<Node<E>> costComparator(){
