@@ -1,5 +1,6 @@
 package ar.edu.itba.sia.chainreaction.engine;
 
+import ar.com.itba.sia.Heuristic;
 import ar.com.itba.sia.Problem;
 import ar.com.itba.sia.Rule;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
@@ -19,23 +20,28 @@ public class Engine<E> {
 
     private Frontier<E> frontier;
 
-
-
     private Engine(Frontier<E> frontier) throws InstantiationException, IllegalAccessException{
         this.frontier = frontier;
     }
 
-    public Node<E> solution(Node<E> start, Problem<E> problem){
-        frontier.add(start);
+    private Engine(Frontier<E> frontier, Heuristic<E> heuristic) throws InstantiationException, IllegalAccessException{
+        this.frontier = frontier;
+    }
 
+    public Node<E> solution(Node<E> start, Problem<E> problem, Heuristic<E> heuristic){
+        frontier.add(start);
+        int nodeVisitedCount = 0;
         while (!frontier.isEmpty()){
             Node<E> node = frontier.getPrioritary();
-
+            System.out.println(nodeVisitedCount++);
             if(problem.isResolved(node.getCurrent()))
                 return node;
 
             problem.getRules(node.getCurrent()).stream()
-                    .map(x->new Node(x.applyToState(node.getCurrent()), node, x.getCost()+node.getCost()))
+                    .map(x-> {
+                        E state = x.applyToState(node.getCurrent());
+                        return new Node<>(state, node, x.getCost()+node.getCost(), heuristic.getValue(state));
+                    })
                     .forEach(frontier::add);
 
             System.out.println(node.getCurrent() + "\n");
@@ -45,6 +51,7 @@ public class Engine<E> {
         return null;
 
     }
-
-
+    public Node<E> solution(Node<E> start, Problem<E> problem) {
+        return solution(start, problem, (x) -> 0);
+    }
 }

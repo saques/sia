@@ -9,13 +9,15 @@ public class Node<E> {
     private Node<E> parent;
 
     private double cost;
+    private double heuristicCost;
 
     private long milis;
 
-    public Node(E current, Node<E> parent, double cost){
+    public Node(E current, Node<E> parent, double cost, double heuristicCost){
         this.current = current;
         this.parent = parent;
         this.cost = cost;
+        this.heuristicCost = heuristicCost;
         this.milis = System.currentTimeMillis();
     }
 
@@ -37,6 +39,7 @@ public class Node<E> {
     public double getCost() {
         return cost;
     }
+    public double getHeuristicCost() {return heuristicCost + cost;}
 
     public long getMilis(){
         return milis;
