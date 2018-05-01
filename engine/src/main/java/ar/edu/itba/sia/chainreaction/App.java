@@ -19,7 +19,10 @@ public class App
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
         Heuristic<ChainReactionState> h1 = new ChainReactionNeighbourPruningHeuristic();
         Frontier<ChainReactionState> frontier;
-        frontier = PQFrontier.aStarFrontier(1000);
+       // frontier = PQFrontier.aStarFrontier(1000);
+//        frontier = PQFrontier.dijkstraFrontier(10);
+        frontier = PQFrontier.greedyFrontier(100);
+//        frontier = new StackFrontier<>();
         //frontier = PQFrontier.dijkstraFrontier(10);
         //frontier = new StackFrontier<>();
         //frontier = new QueueFrontier<>();

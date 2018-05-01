@@ -42,6 +42,13 @@ public class ChainReactionNeighbourPruningHeuristic implements Heuristic<ChainRe
 				}
 			}
 		}
-		return chainReactionState.getNeighbours().size();
+		//System.out.println("["+ chainReactionState.getLeft() + "]");
+		List<Pair<Integer, Integer>> neighbours = chainReactionState.getNeighbours();
+		int sum = neighbours.size();
+//		for (Pair<Integer, Integer> p: neighbours) {
+//			sum += chainReactionState.getPairNeighbours(p).size() - 1;
+//		}
+ 		//double min = chainReactionState.getNeighbours().size();
+		return chainReactionState.getLeft() - 1.0 / sum;
 	}
 }
