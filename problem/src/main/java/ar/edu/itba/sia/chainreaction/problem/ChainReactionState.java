@@ -154,6 +154,14 @@ public class ChainReactionState {
 		return totalSquares - occupiedSquares.cardinality();
 	}
 
+	public int getOccupied(){
+		return occupiedSquares.cardinality();
+	}
+
+	public int getTotalSquares(){
+		return totalSquares;
+	}
+
 	public int getRow() {
 		return row;
 	}

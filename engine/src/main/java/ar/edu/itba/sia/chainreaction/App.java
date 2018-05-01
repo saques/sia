@@ -18,8 +18,10 @@ public class App
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
         Heuristic<ChainReactionState> h1 = new ChainReactionNeighbourPruningHeuristic();
+        Heuristic<ChainReactionState> h2 = new ChainReactionDirectionalDeadCheckHeuristic();
+        Heuristic<ChainReactionState> h3 = new TestH();
         Frontier<ChainReactionState> frontier;
-       // frontier = PQFrontier.aStarFrontier(1000);
+       //frontier = PQFrontier.aStarFrontier(1000);
 //        frontier = PQFrontier.dijkstraFrontier(10);
         frontier = PQFrontier.greedyFrontier(100);
 //        frontier = new StackFrontier<>();
@@ -30,7 +32,7 @@ public class App
         Engine<ChainReactionState> engine = Engine.build(frontier);
 
 
-        Node<ChainReactionState> n = engine.solution(init, problem, h1);
+        Node<ChainReactionState> n = engine.solution(init, problem, h3);
         //Node<ChainReactionState> n = engine.iddfs(init,problem,9);
 
         if(n == null) {

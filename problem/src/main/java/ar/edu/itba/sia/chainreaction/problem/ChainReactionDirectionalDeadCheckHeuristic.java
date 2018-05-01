@@ -35,7 +35,7 @@ public class ChainReactionDirectionalDeadCheckHeuristic implements Heuristic<Cha
                 return Double.POSITIVE_INFINITY;
             }
         }
-        return neighs;
+        return chainReactionState.getLeft() - 1.0 / neighs;
     }
 
     private static boolean omit(Pair<Integer, Integer> pair, ChainReactionState chainReactionState){
