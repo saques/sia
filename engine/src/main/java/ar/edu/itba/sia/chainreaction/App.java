@@ -6,6 +6,7 @@ import ar.edu.itba.sia.chainreaction.engine.Engine;
 import ar.edu.itba.sia.chainreaction.engine.Node;
 import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.QueueFrontier;
+import ar.edu.itba.sia.chainreaction.graphics.ChainReactionGraphics;
 import ar.edu.itba.sia.chainreaction.problem.*;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
 
@@ -39,7 +40,8 @@ public class App
         if(n == null) {
             System.out.println("No solution");
         } else {
-            System.out.println(n.toString());
+//            System.out.println(n.toString());
+			new ChainReactionGraphics(n, 100, 0.8);
             System.out.println("Elapsed: " + init.elapsed(n));
             System.out.println("Cost: " + n.getCost());
         }
