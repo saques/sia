@@ -54,7 +54,7 @@ public class App
 	}
 
     public static void main( String[] args ) throws IOException, IllegalAccessException, InstantiationException{
-		Node<ChainReactionState> n = testFile("./test_problems/pjf7.txt");
-		new ChainReactionGraphics(n, 100, 0.8).drawSolution();
+		Node<ChainReactionState> n = testFile("./test_problems/all9x9/9x9[8,8]test1.txt");
+		//new ChainReactionGraphics(n, 100, 0.8).drawSolution();
     }
 }
