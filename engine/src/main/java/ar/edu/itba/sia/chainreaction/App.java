@@ -6,6 +6,7 @@ import ar.edu.itba.sia.chainreaction.engine.Engine;
 import ar.edu.itba.sia.chainreaction.engine.Node;
 import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.StackFrontier;
+import ar.edu.itba.sia.chainreaction.graphics.ChainReactionGraphics;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionHeuristicNeighbourPruning;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
 import ar.edu.itba.sia.chainreaction.problem.RemainingVertexDegreeHeuristic;
@@ -43,10 +44,11 @@ public class App
         if(n == null) {
             System.out.println("No solution");
         } else {
-            System.out.println(n.toString());
+//            System.out.println(n.toString());
+			new ChainReactionGraphics(n, 100, 0.8).drawSolution();
             System.out.println("Elapsed: " + init.elapsed(n));
             System.out.println("Cost: " + n.getCost());
-        }
+		}
 
 
     }

@@ -3,12 +3,10 @@ package ar.edu.itba.sia.chainreaction.problem;
 import javafx.util.Pair;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ChainReactionState {
 	private final int totalSquares;
-	private final int [][][] board;
+	private final int[][][] board;
 	private final int forms, colors, row, col, rows, cols;
 	private BitSet occupiedSquares;
 
@@ -38,14 +36,13 @@ public class ChainReactionState {
 
 	private boolean[][] copyBidimensionalArray(boolean[][] old) {
 		boolean[][] n = new boolean[old.length][];
-		for(int i=0; i<old.length; i++)
+		for (int i = 0; i < old.length; i++)
 			n[i] = Arrays.copyOf(old[i], old[i].length);
 		return n;
 	}
+
 	/**
-	 *
 	 * @param previousState
-	 *
 	 */
 	ChainReactionState(ChainReactionState previousState, final int row, final int col) {
 		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols, false);
@@ -54,7 +51,7 @@ public class ChainReactionState {
 	}
 
 	private boolean canGoThere(int row, int col, int row2, int col2) {
-		return !occupiedSquares.get(row2* cols + col2) &&
+		return !occupiedSquares.get(row2 * cols + col2) &&
 				(board[row][col][0] == board[row2][col2][0] ||
 						board[row][col][1] == board[row2][col2][1]);
 	}
@@ -64,12 +61,12 @@ public class ChainReactionState {
 		int row = pair.getKey();
 		int col = pair.getValue();
 		for (int i = 0; i < rows; i++) {
-			if (i != row && canGoThere(row,col, i, col)) {
+			if (i != row && canGoThere(row, col, i, col)) {
 				set.add(new Pair<>(i, col));
 			}
 		}
 		for (int j = 0; j < cols; j++) {
-			if (j != col && canGoThere(row,col, row, j)) {
+			if (j != col && canGoThere(row, col, row, j)) {
 				set.add(new Pair<>(row, j));
 			}
 		}
@@ -80,13 +77,13 @@ public class ChainReactionState {
 		return occupiedSquares.cardinality() == totalSquares;
 	}
 
-	List<Pair<Integer, Integer>> getNeighbours(){
+	List<Pair<Integer, Integer>> getNeighbours() {
 		return findNeighbours(new Pair<>(row, col));
 	}
 
 
-	double fillRate(){
-		return ((double)occupiedSquares.cardinality())/((double)totalSquares);
+	double fillRate() {
+		return ((double) occupiedSquares.cardinality()) / ((double) totalSquares);
 	}
 
 	@Override
@@ -127,8 +124,8 @@ public class ChainReactionState {
 				cols == that.cols &&
 				Arrays.equals(board, that.board) &&
 				Objects.equals(occupiedSquares, that.occupiedSquares);
-			//	Objects.equals(occupiedSquaresOrdered, that.occupiedSquaresOrdered);
-			//	Objects.equals(neighbours, that.neighbours);
+		//	Objects.equals(occupiedSquaresOrdered, that.occupiedSquaresOrdered);
+		//	Objects.equals(neighbours, that.neighbours);
 	}
 
 	@Override
@@ -137,6 +134,10 @@ public class ChainReactionState {
 		int result = Objects.hash(totalSquares, forms, colors, row, col, rows, cols, occupiedSquares);
 		result = 31 * result + Arrays.hashCode(board);
 		return result;
+	}
+
+	public int[][][] getBoard() {
+		return board;
 	}
 
 	public int getRows() {

@@ -11,6 +11,14 @@ public class ChainReactionRule implements Rule<ChainReactionState> {
 		this.nextCol = nextCol;
 	}
 
+	public int getNextRow() {
+		return nextRow;
+	}
+
+	public int getNextCol() {
+		return nextCol;
+	}
+
 	@Override
 	public double getCost() {
 		return 0;
