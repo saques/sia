@@ -23,7 +23,7 @@ public class PQFrontier<E> implements Frontier<E> {
     }
 
     private static <E> Comparator<Node<E>> heuristicComparator(){
-        return Comparator.comparingDouble(Node::getHeuristicCost);
+        return Comparator.comparingDouble(x -> x.getCost() + x.getHeuristicCost());
     }
 
     private static <E> Comparator<Node<E>> costComparator(){

@@ -32,7 +32,9 @@ public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainRe
 				}
 			}
 		}
+
 		//System.out.println("["+ chainReactionState.getLeft() + "]");
+		double min = chainReactionState.getNeighbours().size();
 		return chainReactionState.getNeighbours().size();
 	}
 }

@@ -19,7 +19,7 @@ import java.io.File;
 public class App
 {
     public static void main( String[] args ) throws Exception{
-        File problemFile = new File("./test_problems/pjf10.txt");
+        File problemFile = new File("./test_problems/pjf7.txt");
 
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
