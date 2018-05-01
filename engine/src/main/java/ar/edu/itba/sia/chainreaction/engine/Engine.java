@@ -36,7 +36,6 @@ public class Engine<E> {
             System.out.println(nodeVisitedCount++);
             if(problem.isResolved(node.getCurrent()))
                 return node;
-
             problem.getRules(node.getCurrent()).stream()
                     .map(x-> {
                         E state = x.applyToState(node.getCurrent());

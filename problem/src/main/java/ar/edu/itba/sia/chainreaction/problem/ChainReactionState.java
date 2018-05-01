@@ -10,9 +10,7 @@ public class ChainReactionState {
 	private final int totalSquares;
 	private final int [][][] board;
 	private final int forms, colors, row, col, rows, cols;
-	private boolean[][] occupiedSquares;
-	private List<Pair<Integer, Integer>> occupiedSquaresOrdered;
-	private List<Pair<Integer, Integer>> neighbours;
+	private BitSet occupiedSquares;
 
 	/**
 	 * @param board board[rows][cols][2]
@@ -33,12 +31,8 @@ public class ChainReactionState {
 		this.cols = cols;
 		Pair<Integer, Integer> p = new Pair<>(row, col);
 		if (isInitial) {
-			this.occupiedSquares = new boolean[rows][cols];
-			this.occupiedSquaresOrdered = new ArrayList<>();
-			occupiedSquares[row][col] = true;
-			occupiedSquaresOrdered.add(p);
-			Pair<Integer, Integer> pair = new Pair<>(row, col);
-			this.neighbours = findNeighbours(pair);
+			this.occupiedSquares = new BitSet(rows * cols);
+			this.occupiedSquares.set(row * cols + col);
 		}
 	}
 
@@ -55,18 +49,12 @@ public class ChainReactionState {
 	 */
 	ChainReactionState(ChainReactionState previousState, final int row, final int col) {
 		this(previousState.board, previousState.forms, previousState.colors, previousState.totalSquares, row, col, previousState.rows, previousState.cols, false);
-		this.occupiedSquares = copyBidimensionalArray(previousState.occupiedSquares);
-		occupiedSquares[row][col] = true;
-		this.occupiedSquaresOrdered = new ArrayList<>(previousState.occupiedSquaresOrdered);
-		Pair<Integer, Integer> pair = new Pair<>(row, col);
-		this.occupiedSquaresOrdered.add(pair);
-		this.neighbours = findNeighbours(pair);
-//		this.neighbours.addAll(getRowNeighbours(pair));
-		this.neighbours.removeIf(x -> occupiedSquares[x.getKey()][x.getValue()]);
+		this.occupiedSquares = (BitSet) previousState.occupiedSquares.clone();
+		this.occupiedSquares.set(row * cols + col);
 	}
 
 	private boolean canGoThere(int row, int col, int row2, int col2) {
-		return !occupiedSquares[row2][col2] &&
+		return !occupiedSquares.get(row2* cols + col2) &&
 				(board[row][col][0] == board[row2][col2][0] ||
 						board[row][col][1] == board[row2][col2][1]);
 	}
@@ -89,16 +77,16 @@ public class ChainReactionState {
 	}
 
 	boolean isFinal() {
-		return occupiedSquaresOrdered.size() == totalSquares;
+		return occupiedSquares.cardinality() == totalSquares;
 	}
 
 	List<Pair<Integer, Integer>> getNeighbours(){
-		return neighbours;
+		return findNeighbours(new Pair<>(row, col));
 	}
 
 
 	double fillRate(){
-		return ((double)occupiedSquaresOrdered.size())/((double)totalSquares);
+		return ((double)occupiedSquares.cardinality())/((double)totalSquares);
 	}
 
 	@Override
@@ -107,7 +95,7 @@ public class ChainReactionState {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				char c1, c2;
-				if (occupiedSquares[i][j]) {
+				if (occupiedSquares.get(i * cols + j)) {
 					if (i == row && j == col) {
 						c1 = '[';
 						c2 = ']';
@@ -138,15 +126,15 @@ public class ChainReactionState {
 				rows == that.rows &&
 				cols == that.cols &&
 				Arrays.equals(board, that.board) &&
-				Objects.equals(occupiedSquares, that.occupiedSquares) &&
-				Objects.equals(occupiedSquaresOrdered, that.occupiedSquaresOrdered) &&
-				Objects.equals(neighbours, that.neighbours);
+				Objects.equals(occupiedSquares, that.occupiedSquares);
+			//	Objects.equals(occupiedSquaresOrdered, that.occupiedSquaresOrdered);
+			//	Objects.equals(neighbours, that.neighbours);
 	}
 
 	@Override
 	public int hashCode() {
 
-		int result = Objects.hash(totalSquares, forms, colors, row, col, rows, cols, occupiedSquares, occupiedSquaresOrdered, neighbours);
+		int result = Objects.hash(totalSquares, forms, colors, row, col, rows, cols, occupiedSquares);
 		result = 31 * result + Arrays.hashCode(board);
 		return result;
 	}
@@ -168,10 +156,10 @@ public class ChainReactionState {
 	}
 
 	public int getLeft() {
-		return totalSquares - occupiedSquaresOrdered.size();
+		return totalSquares - occupiedSquares.cardinality();
 	}
 
-	public boolean[][] getOccupiedSquares() {
-		return occupiedSquares;
+	public boolean isOccupied(int row, int col) {
+		return occupiedSquares.get(row * cols + col);
 	}
 }

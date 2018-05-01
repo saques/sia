@@ -21,7 +21,7 @@ public class Node<E> {
 
     public Node(E current, Node<E> parent, Rule<E> rule, double cost, double heuristicCost){
         this.current = current;
-        //this.parent = parent;
+        this.parent = parent;
         this.rule = rule;
         this.cost = cost;
         this.heuristicCost = heuristicCost;

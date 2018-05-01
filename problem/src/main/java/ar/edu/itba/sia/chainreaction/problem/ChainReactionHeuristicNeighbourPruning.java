@@ -19,7 +19,7 @@ public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainRe
 					continue;
 				}
 				Pair<Integer, Integer> pair = new Pair<>(i, j);
-				if (chainReactionState.isZeroZeroSquare(pair) || chainReactionState.getOccupiedSquares()[pair.getKey()][pair.getValue()]){
+				if (chainReactionState.isZeroZeroSquare(pair) || chainReactionState.isOccupied(pair.getKey(), pair.getValue())){
 					continue;
 				}
 				List<Pair<Integer, Integer>> list = chainReactionState.getPairNeighbours(pair);
@@ -32,6 +32,7 @@ public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainRe
 				}
 			}
 		}
+		//System.out.println("["+ chainReactionState.getLeft() + "]");
 		return chainReactionState.getNeighbours().size();
 	}
 }
