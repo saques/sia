@@ -53,7 +53,6 @@ public class PQFrontier<E> implements Frontier<E> {
     @Override
     public void add(Node<E> n) {
         pq.add(n);
-        //System.out.println("[ " + pq.size() + " ]");
     }
 
     @Override
@@ -64,5 +63,10 @@ public class PQFrontier<E> implements Frontier<E> {
     @Override
     public int size() {
         return pq.size();
+    }
+
+    @Override
+    public void clear() {
+        pq.clear();
     }
 }

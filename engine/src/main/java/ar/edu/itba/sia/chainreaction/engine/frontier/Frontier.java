@@ -18,4 +18,6 @@ public interface Frontier<E> {
         return size() == 0;
     }
 
+    void clear();
+
 }

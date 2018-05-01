@@ -24,31 +24,50 @@ public class Engine<E> {
         this.frontier = frontier;
     }
 
-    private Engine(Frontier<E> frontier, Heuristic<E> heuristic) throws InstantiationException, IllegalAccessException{
-        this.frontier = frontier;
-    }
+    public Node<E> solution(Node<E> start, Problem<E> problem, Heuristic<E> heuristic, int depth){
 
-    public Node<E> solution(Node<E> start, Problem<E> problem, Heuristic<E> heuristic){
         frontier.add(start);
-        int nodeVisitedCount = 0;
+
         while (!frontier.isEmpty()){
             Node<E> node = frontier.getPrioritary();
-            System.out.println(nodeVisitedCount++);
+
             if(problem.isResolved(node.getCurrent()))
                 return node;
+
             problem.getRules(node.getCurrent()).stream()
                     .map(x-> {
                         E state = x.applyToState(node.getCurrent());
                         return new Node<>(state, node, x,x.getCost()+node.getCost(), heuristic.getValue(state));
                     })
+                    .filter(x -> x.getDepth() <= depth)
                     .forEach(frontier::add);
 
         }
-
         return null;
+    }
 
+    public Node<E> solution(Node<E> start, Problem<E> problem, Heuristic<E> heuristic){
+        return solution(start, problem, heuristic, Integer.MAX_VALUE);
     }
+
     public Node<E> solution(Node<E> start, Problem<E> problem) {
-        return solution(start, problem, (x) -> 0);
+        return solution(start, problem, (x) -> 0, Integer.MAX_VALUE);
     }
+
+    public Node<E> solution(Node<E> start, Problem<E> problem, int depth) {
+        return solution(start, problem, (x) -> 0, depth);
+    }
+
+    public Node<E> iddfs(Node<E> start, Problem<E> problem, int maxDepth){
+        frontier.clear();
+        Node<E> ans = null;
+        for(int i=1; i < maxDepth; i++){
+            ans = solution(start,problem,i);
+            if(ans != null)
+                break;
+            frontier.clear();
+        }
+        return ans;
+    }
+
 }
