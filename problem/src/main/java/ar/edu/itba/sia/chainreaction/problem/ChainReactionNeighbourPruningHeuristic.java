@@ -5,7 +5,17 @@ import javafx.util.Pair;
 
 import java.util.List;
 
-public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainReactionState> {
+public class ChainReactionNeighbourPruningHeuristic implements Heuristic<ChainReactionState> {
+
+	private int inc;
+
+	public ChainReactionNeighbourPruningHeuristic(){
+		this(1);
+	}
+
+	public ChainReactionNeighbourPruningHeuristic(int inc){
+		this.inc = inc;
+	}
 
 	@Override
 	public double getValue(ChainReactionState chainReactionState) {
@@ -13,8 +23,8 @@ public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainRe
 			return 0;
 		}
 		boolean[][] checked = new boolean[chainReactionState.getRows()][chainReactionState.getCols()];
-		for (int i = 0; i < chainReactionState.getRows(); i++) {
-			for (int j = 0; j < chainReactionState.getCols(); j++) {
+		for (int i = 0; i < chainReactionState.getRows(); i+=inc) {
+			for (int j = 0; j < chainReactionState.getCols(); j+=inc) {
 				if (checked[i][j]) {
 					continue;
 				}
@@ -32,9 +42,6 @@ public class ChainReactionHeuristicNeighbourPruning implements Heuristic<ChainRe
 				}
 			}
 		}
-
-		//System.out.println("["+ chainReactionState.getLeft() + "]");
-		double min = chainReactionState.getNeighbours().size();
 		return chainReactionState.getNeighbours().size();
 	}
 }
