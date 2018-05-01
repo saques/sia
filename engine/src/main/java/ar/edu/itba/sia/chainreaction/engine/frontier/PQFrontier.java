@@ -1,8 +1,6 @@
 package ar.edu.itba.sia.chainreaction.engine.frontier;
 
-import ar.com.itba.sia.Heuristic;
 import ar.edu.itba.sia.chainreaction.engine.Node;
-
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -12,7 +10,7 @@ public class PQFrontier<E> implements Frontier<E> {
 
     public static <E> PQFrontier<E> aStarFrontier(int initial){
         PQFrontier<E> ans = new PQFrontier<>();
-        ans.pq = new PriorityQueue<>(initial, heuristicComparator());
+        ans.pq = new PriorityQueue<>(initial, costAndHeuristicComparator());
         return ans;
     }
 
@@ -22,12 +20,22 @@ public class PQFrontier<E> implements Frontier<E> {
         return ans;
     }
 
+    public static <E> PQFrontier<E> greedyFrontier(int initial) {
+        PQFrontier<E> ans = new PQFrontier<>();
+        ans.pq = new PriorityQueue<>(initial, heuristicComparator());
+        return ans;
+    }
+
     private static <E> Comparator<Node<E>> heuristicComparator(){
+        return Comparator.comparingDouble(Node::getHeuristicCost);
+    }
+
+    private static <E> Comparator<Node<E>> costAndHeuristicComparator(){
         return Comparator.comparingDouble(x -> x.getCost() + x.getHeuristicCost());
     }
 
     private static <E> Comparator<Node<E>> costComparator(){
-        return (x, y) -> Double.compare(x.getCost(), y.getCost());
+        return Comparator.comparingDouble(Node::getCost);
     }
 
     private PriorityQueue<Node<E>> pq;
@@ -43,7 +51,6 @@ public class PQFrontier<E> implements Frontier<E> {
     @Override
     public void add(Node<E> n) {
         pq.add(n);
-        //System.out.println("[ " + pq.size() + " ]");
     }
 
     @Override
@@ -54,5 +61,10 @@ public class PQFrontier<E> implements Frontier<E> {
     @Override
     public int size() {
         return pq.size();
+    }
+
+    @Override
+    public void clear() {
+        pq.clear();
     }
 }

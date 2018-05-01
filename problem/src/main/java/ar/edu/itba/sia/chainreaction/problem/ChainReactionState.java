@@ -81,11 +81,6 @@ public class ChainReactionState {
 		return findNeighbours(new Pair<>(row, col));
 	}
 
-
-	double fillRate() {
-		return ((double) occupiedSquares.cardinality()) / ((double) totalSquares);
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -158,6 +153,22 @@ public class ChainReactionState {
 
 	public int getLeft() {
 		return totalSquares - occupiedSquares.cardinality();
+	}
+
+	public int getOccupied(){
+		return occupiedSquares.cardinality();
+	}
+
+	public int getTotalSquares(){
+		return totalSquares;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
 	}
 
 	public boolean isOccupied(int row, int col) {

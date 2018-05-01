@@ -28,4 +28,9 @@ public class QueueFrontier<E> implements Frontier<E> {
     public int size() {
         return q.size();
     }
+
+    @Override
+    public void clear() {
+        q.clear();
+    }
 }

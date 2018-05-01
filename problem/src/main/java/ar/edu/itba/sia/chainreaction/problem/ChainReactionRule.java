@@ -21,7 +21,7 @@ public class ChainReactionRule implements Rule<ChainReactionState> {
 
 	@Override
 	public double getCost() {
-		return 0;
+		return 1;
 	}
 
 	@Override

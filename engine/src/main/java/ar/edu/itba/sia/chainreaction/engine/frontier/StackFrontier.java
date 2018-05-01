@@ -28,4 +28,9 @@ public class StackFrontier<E> implements Frontier<E> {
     public int size() {
         return s.size();
     }
+
+    @Override
+    public void clear() {
+        s.clear();
+    }
 }
