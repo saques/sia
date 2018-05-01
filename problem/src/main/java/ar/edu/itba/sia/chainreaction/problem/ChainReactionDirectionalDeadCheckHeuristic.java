@@ -8,34 +8,39 @@ import java.util.List;
 public class ChainReactionDirectionalDeadCheckHeuristic implements Heuristic<ChainReactionState> {
 
     @Override
-    public double getValue(ChainReactionState chainReactionState) {
-        double neighs = chainReactionState.getNeighbours().size();
-        if(neighs == 0 && chainReactionState.getLeft() != 0)
-            return Double.POSITIVE_INFINITY;
+    public double getValue(ChainReactionState c) {
+        if (c.getLeft() == 1) {
+            return 0;
+        }
+        boolean[][] checked = new boolean[c.getRows()][c.getCols()];
+        int x = c.getRow(), y = c.getCol();
 
-        int x = chainReactionState.getRow(), y = chainReactionState.getCol();
-        for(int yp=0; yp<chainReactionState.getCols(); yp++){
-            Pair<Integer, Integer> pair = new Pair<>(x, yp);
-            if(yp == y || omit(pair, chainReactionState)) {
-                continue;
-            }
-            List<Pair<Integer, Integer>> list = chainReactionState.getPairNeighbours(pair);
-            if(list.size() == 0) {
+        for(int yp=0; yp<c.getCols(); yp++){
+            if(doCheck(x,y,x,yp,checked,c))
                 return Double.POSITIVE_INFINITY;
-            }
         }
 
-        for(int xp=0; xp<chainReactionState.getRows(); xp++){
-            Pair<Integer, Integer> pair = new Pair<>(xp, y);
-            if(xp == x || omit(pair, chainReactionState)) {
-                continue;
-            }
-            List<Pair<Integer, Integer>> list = chainReactionState.getPairNeighbours(pair);
-            if(list.size() == 0) {
+        for(int xp=0; xp<c.getRows(); xp++){
+            if(doCheck(x,y,xp,y,checked,c))
                 return Double.POSITIVE_INFINITY;
-            }
         }
-        return chainReactionState.getLeft() - 1.0 / neighs;
+
+        return c.getLeft() - 1.0 / c.getNeighbours().size();
+    }
+
+    private static boolean doCheck(int x, int y, int xp, int yp, boolean[][] checked, ChainReactionState c){
+        Pair<Integer, Integer> pair = new Pair<>(xp, yp);
+        if(checked[xp][yp] || (yp == y && xp == x) || omit(pair, c)) {
+            return false;
+        }
+        List<Pair<Integer, Integer>> list = c.getPairNeighbours(pair);
+        if(list.isEmpty()) {
+            return true;
+        }
+        list.forEach(p -> {
+            checked[p.getKey()][p.getValue()] = true;
+        });
+        return false;
     }
 
     private static boolean omit(Pair<Integer, Integer> pair, ChainReactionState chainReactionState){
