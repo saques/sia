@@ -8,6 +8,7 @@ import ar.edu.itba.sia.chainreaction.engine.frontier.PQFrontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.QueueFrontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.StackFrontier;
 import ar.edu.itba.sia.chainreaction.problem.ChainReactionNeighbourPruningHeuristic;
+import ar.edu.itba.sia.chainreaction.graphics.ChainReactionGraphics;
 import ar.edu.itba.sia.chainreaction.problem.*;
 import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
 
@@ -17,14 +18,14 @@ import java.util.stream.IntStream;
 
 public class App
 {
-	public static void testFile(String path) throws IOException, IllegalAccessException, InstantiationException{
+	public static Node<ChainReactionState> testFile(String path) throws IOException, IllegalAccessException, InstantiationException{
 		File problemFile = new File(path);
 
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
         Heuristic<ChainReactionState> h1 = new ChainReactionNeighbourPruningHeuristic();
         Heuristic<ChainReactionState> h2 = new ChainReactionDirectionalDeadCheckHeuristic();
-        Heuristic<ChainReactionState> h3 = new TestH();
+        Heuristic<ChainReactionState> h3 = new ChainReactionLeftVsOpenHeuristic();
         Frontier<ChainReactionState> frontier;
 //       frontier = PQFrontier.aStarFrontier(1000);
 //        frontier = PQFrontier.dijkstraFrontier(10);
@@ -49,9 +50,11 @@ public class App
 			System.out.println("Visited: " + engine.getVisitedNodes());
 			System.out.println("Frontier: "+ engine.getFrontierNodes());
 		}
+		return n;
 	}
 
     public static void main( String[] args ) throws IOException, IllegalAccessException, InstantiationException{
-		testFile("./test_problems/5x5/5x5test2.txt");
+		Node<ChainReactionState> n = testFile("./test_problems/pjf7.txt");
+		new ChainReactionGraphics(n, 100, 0.8).drawSolution();
     }
 }

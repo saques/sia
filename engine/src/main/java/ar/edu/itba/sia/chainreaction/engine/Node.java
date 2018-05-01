@@ -37,6 +37,10 @@ public class Node<E> {
         return parent;
     }
 
+    public Rule<E> getRule() {
+    	return rule;
+	}
+
     public String toString(){
         if(parent == null){
             return current.toString();
