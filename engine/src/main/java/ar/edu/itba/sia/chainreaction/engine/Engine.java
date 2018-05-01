@@ -7,11 +7,11 @@ import ar.edu.itba.sia.chainreaction.engine.frontier.Frontier;
 import ar.edu.itba.sia.chainreaction.engine.frontier.NonEmptyFrontierException;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public class Engine<E> {
-
     public static <E> Engine<E> build(Frontier<E> frontier) throws InstantiationException, IllegalAccessException {
         if(!frontier.isEmpty())
             throw new NonEmptyFrontierException();
@@ -19,9 +19,11 @@ public class Engine<E> {
     }
 
     private Frontier<E> frontier;
-
+    private int expandedNodes, visitedNodes;
     private Engine(Frontier<E> frontier) throws InstantiationException, IllegalAccessException{
         this.frontier = frontier;
+        this.expandedNodes = 0;
+        this.visitedNodes = 0;
     }
 
     public Node<E> solution(Node<E> start, Problem<E> problem, Heuristic<E> heuristic, int depth){
@@ -30,11 +32,13 @@ public class Engine<E> {
 
         while (!frontier.isEmpty()){
             Node<E> node = frontier.getPrioritary();
-
+            visitedNodes++;
             if(problem.isResolved(node.getCurrent()))
                 return node;
 
-            problem.getRules(node.getCurrent()).stream()
+            List<Rule<E>> rules = problem.getRules(node.getCurrent());
+            expandedNodes += rules.size();
+            rules.stream()
                     .map(x-> {
                         E state = x.applyToState(node.getCurrent());
                         return new Node<>(state, node, x,x.getCost()+node.getCost(), heuristic.getValue(state));
@@ -70,4 +74,15 @@ public class Engine<E> {
         return ans;
     }
 
+    public int getExpandedNodes() {
+        return expandedNodes;
+    }
+
+    public int getVisitedNodes() {
+        return visitedNodes;
+    }
+
+    public int getFrontierNodes() {
+        return frontier.size();
+    }
 }

@@ -77,5 +77,4 @@ public class Node<E> {
 
         return Objects.hash(current, parent, cost);
     }
-
 }

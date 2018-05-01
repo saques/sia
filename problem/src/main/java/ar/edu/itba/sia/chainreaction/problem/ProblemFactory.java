@@ -12,7 +12,8 @@ public class ProblemFactory {
 			int cols = scanner.nextInt();
 			int forms = scanner.nextInt();
 			int colors = scanner.nextInt();
-
+			int initX = scanner.nextInt();
+			int initY = scanner.nextInt();
 			int [][][] board = new int[rows][cols][2];
 			int totalDimension = 0;
 			for (int i = 0; i < rows; i++) {
@@ -33,7 +34,7 @@ public class ProblemFactory {
 					board[i][j][1] = c;
 				}
 			}
-			return new ChainReactionProblem(board, forms, colors, totalDimension, rows, cols);
+			return new ChainReactionProblem(board, forms, colors, totalDimension, rows, cols, initX, initY);
 		}
 
 	}

@@ -18,7 +18,7 @@ import java.io.File;
 public class App
 {
     public static void main( String[] args ) throws Exception{
-        File problemFile = new File("./test_problems/pjf100x100.txt");
+        File problemFile = new File("./test_problems/pjf20x20.txt");
 
         Problem problem = ProblemFactory.createChainReactionProblem(problemFile);
         Node<ChainReactionState> init = new Node<>((ChainReactionState)problem.getInitialState(),null, null, 0,0);
@@ -29,10 +29,10 @@ public class App
         Frontier<ChainReactionState> frontier;
        // frontier = PQFrontier.aStarFrontier(1000);
 //        frontier = PQFrontier.dijkstraFrontier(10);
-        frontier = PQFrontier.greedyFrontier(100);
+//        frontier = PQFrontier.greedyFrontier(100);
 //        frontier = new StackFrontier<>();
         //frontier = PQFrontier.dijkstraFrontier(10);
-        //frontier = new StackFrontier<>();
+        frontier = new StackFrontier<>();
         //frontier = new QueueFrontier<>();
 
         Engine<ChainReactionState> engine = Engine.build(frontier);
@@ -47,6 +47,10 @@ public class App
             System.out.println(n.toString());
             System.out.println("Elapsed: " + init.elapsed(n));
             System.out.println("Cost: " + n.getCost());
+            System.out.println("Depth: " + n.getDepth());
+            System.out.println("Expanded: " + engine.getExpandedNodes());
+            System.out.println("Visited: " + engine.getVisitedNodes());
+            System.out.println("Frontier: "+ engine.getFrontierNodes());
         }
 
 
