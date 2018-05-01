@@ -16,7 +16,7 @@ public class AppTest
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void test5Through10()
     {
         IntStream.range(5, 11).forEach((size) -> {
             IntStream.range(1, 4).forEach(iter -> {
@@ -24,6 +24,29 @@ public class AppTest
                     String f = size + "x" + size + "/" +size + "x" + size + "test" + iter + ".txt";
                     System.out.println("\""+ f + "\"");
                     App.testFile("./test_problems/" + f);
+                    System.out.println("////////////\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+    }
+
+    @Test
+    public void test20x20()
+    {
+        int size = 11;
+        IntStream.range(5, 11).forEach((shape) -> {
+            IntStream.range(1, 4).forEach(iter -> {
+                try {
+                    String f = size + "x" + size + "/" +size + "x" + size + "["+shape+","+shape+ "]test" + iter + ".txt";
+                    System.out.println("\""+ f + "\"");
+                    App.testFile("./test_problems/" + f);
+                    System.out.println("////////////\n");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {

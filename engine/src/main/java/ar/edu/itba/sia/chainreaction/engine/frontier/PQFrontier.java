@@ -1,8 +1,6 @@
 package ar.edu.itba.sia.chainreaction.engine.frontier;
 
-import ar.com.itba.sia.Heuristic;
 import ar.edu.itba.sia.chainreaction.engine.Node;
-
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
