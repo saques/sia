@@ -19,7 +19,7 @@ public class Engine<E> {
     }
 
     private Frontier<E> frontier;
-    private int expandedNodes, visitedNodes;
+    private long expandedNodes, visitedNodes;
     private Engine(Frontier<E> frontier) throws InstantiationException, IllegalAccessException{
         this.frontier = frontier;
         this.expandedNodes = 0;
@@ -74,11 +74,11 @@ public class Engine<E> {
         return ans;
     }
 
-    public int getExpandedNodes() {
+    public long getExpandedNodes() {
         return expandedNodes;
     }
 
-    public int getVisitedNodes() {
+    public long getVisitedNodes() {
         return visitedNodes;
     }
 

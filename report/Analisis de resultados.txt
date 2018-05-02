@@ -1,0 +1,52 @@
+En la Tabla 1, podemos ver una comparación entre los distintos algoritmos de búsqueda
+para tableros de dimensión 5x5 hasta 10x10, todos compuestos por casilleros de 4 formas
+y 4 colores. Para los algoritmos A* y Greedy, la heuristica utilizada fue la Heuristica con Poda
+Completa.
+
+Los resultados muestran que el peor rendimiento se obtuvo tanto con búsquedas BFS y DFS, 
+mientras que los algoritmos A* y Greedy dieron mucho mejores resultados tanto en tiempo 
+como en cantidad de nodos visitados, lo que significa 
+que las heurísticas que utilizamos fueron muy efectivas. Decidimos en esta tabla no mostrar
+los resultados del algoritmo Greedy dado que en nuestro problema en particular, es equivalente
+a una búsqueda BFS.
+
+Cabe resaltar que 3 de los 4 algoritmos no consiguieron terminar con todos los casos de prueba.
+Tanto para búsqueda BFS como A*, el programa debió terminar porque el sistema se quedó sin 
+memoria durante la búsqueda (de un limite de 8 GB, seteado mediante el flag -Xmx8g de la JVM),
+mientras que decidimos terminar la búsqueda DFS cuando el tiempo de ejecución superó los 10 minutos.
+
+Que la explosión en el uso de memoria sea tan pronunciado para los algoritmos de búsqueda que 
+progresan a lo ancho del espacio de soluciones (BFS y A*) y no para los que progresan en profundidad
+(DFS y Greedy) tiene sentido dado la naturaleza del problema: la máxima profundidad de la solución
+no solo esta acotada, sino que es siempre exactamente la misma. Esto quiere decir que una búsqueda
+en profundidad sacará nodos de la frontera mucho más frecuentemente que una búsqueda a lo ancho.
+
+Una optimización que cabe recalcar que nos ayudó a mantener el impacto en memoria mínimo para
+la búsqueda Greedy es no introducir en la cola de prioridades aquellos nodos cuyos estados tuvieran
+una heuristica con costo infinito. Esto es porque ese costo implica que la solucón no se puede
+alcanzar siguiendo la rama de ese nodo, y por lo tanto mantenerlo en memoria no tiene valor.
+
+Para comparar los resultados obtenidos del algoritmo Greedy con las diferentes heuristicas,
+podemos ver la tabla 2. Realizamos una comparación para tableros de dimensión 9x9, y de formas y colores
+que van desde 5 a 10.
+
+Para empezar, no pudimos encontrar diferencias en la cantidad de nodos expandidos, visitados
+o en frontera para la Heuristica con poda Completa y la Heuristica con 
+Poda direccional. Esto lleva a pensar que, en la práctica, son en realidad equivalentes. Podemos 
+asignar a diferencias en la implementación las variaciones en el tiempo de cada caso, con la 
+Poda Completa ganando en los casos con menor cantidad de nodos expandidos, y la Poda Direccional 
+ganando en los casos más "difíciles".
+
+Es precisamente en estos casos "difíciles" dónde podemos apreciar la ventaja que nos trae utilizar
+la poda. En la mayoría de los casos, las diferencias tanto en tiempo como en expansión de nodos
+para las heurísticas con o sin poda son pequeñas, o incluso inexistentes. Dónde podemos apreciar
+una gran diferencia es en estos casos dónde es necesario expandir una gran cantidad de nodos para
+encontrar una solución (reslatados en negrita en la tabla). En estos casos, se puede apreciar hasta
+un incremento de 10 veces la cantidad de nodos expandidos. Por lo tanto, podemos concluir que la 
+poda es efectiva.
+
+No pudimos encontrar una forma efectiva para producir estos casos "difíciles", por lo que pudimos 
+encontrarlos solo mediante una gran cantidad de muestras. Sin embargo, encontramos que son más frecuentes
+en tableros de dimensiónes mayores. Es por eso que, si bien los algoritmos con poda pueden resolver
+tableros de dimensiónes hasta 20 x 20 con velocidades sorpendentes, encontramos que estos casos resultan
+imposibles de resolver en un tiempo razonable a dimensiónes altas por estos algoritmos.
