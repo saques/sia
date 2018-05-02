@@ -12,3 +12,6 @@
 
 -Informe y presentación
 *Dentro de report/, se encontrará el .pdf del informe, el .tex de la fuente, el .pdf de la presentación y las tablas anexas al informe en formatos excel y .pdf.
+
+-Problemas de prueba
+*En test_problems/, se podrá hallar una serie de casos de prueba de Chain Reaction con tableros de diferentes tamaños y complejidades.
