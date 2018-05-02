@@ -1,0 +1,50 @@
+pjf14.txt
+Neighbour pruning 
+Elapsed: 4420
+Cost: 51.0
+Depth: 51
+Expanded: 1565245
+Visited: 821817
+Frontier: 743429
+
+TestH
+Elapsed: 24903
+Cost: 51.0
+Depth: 51
+Expanded: 60281770
+Visited: 60281715
+Frontier: 56
+
+pjf14.txt
+Neighbour pruning
+Elapsed: 54
+Cost: 50.0
+Depth: 50
+Expanded: 175
+Visited: 51
+Frontier: 125
+
+TestH
+Elapsed: 57
+Cost: 50.0
+Depth: 50
+Expanded: 175
+Visited: 51
+Frontier: 125
+
+pjf20x20.txt
+Neighbour pruning
+Elapsed: 129
+Cost: 269.0
+Depth: 269
+Expanded: 2027
+Visited: 270
+Frontier: 1758
+
+TestH
+Elapsed: 76
+Cost: 269.0
+Depth: 269
+Expanded: 2027
+Visited: 270
+Frontier: 1758

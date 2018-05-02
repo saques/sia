@@ -50,7 +50,10 @@ public class PQFrontier<E> implements Frontier<E> {
 
     @Override
     public void add(Node<E> n) {
-        pq.add(n);
+        if (n.getHeuristicCost() != Double.POSITIVE_INFINITY) {
+            pq.add(n);
+        }
+
     }
 
     @Override
