@@ -23,7 +23,7 @@ public class AppTest
                 try {
                     String f = size + "x" + size + "/" +size + "x" + size + "test" + iter + ".txt";
                     System.out.println("\""+ f + "\"");
-                    App.testFile("./test_problems/" + f);
+                    App.testFile("./test_problems/" + f,1,"greedy");
                     System.out.println("////////////\n");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -45,7 +45,7 @@ public class AppTest
                 try {
                     String f = "all" + size + "x" + size + "/" +size + "x" + size + "["+shape+","+shape+ "]test" + iter + ".txt";
                     System.out.println("\""+ f + "\"");
-                    App.testFile("./test_problems/" + f);
+                    App.testFile("./test_problems/" + f,1 , "greedy");
                     System.out.println("////////////\n");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -65,7 +65,7 @@ public class AppTest
                 int size = 5, shape = 4, color=7;
                 String f = "all" +size + "x" + size + "/" +size + "x" + size + "["+shape+","+color+ "]test" + iter + ".txt";
                 System.out.println("\""+ f + "\"");
-                App.testFile("./test_problems/" + f);
+                App.testFile("./test_problems/" + f, 1, "greedy");
                 System.out.println("////////////\n");
             } catch (IOException e) {
                 e.printStackTrace();
